@@ -2,18 +2,53 @@
 
 var models = require('../models/models.js');
 
+// Autoload - factoriza el código si ruta incluye :quizId
 
-// GET /quizes/question
+exports.load = function(req, res, next, quizId) {
+   models.Quiz.find(quizId).then (
+      function(quiz) {
+         if (quiz)
+         {
+            req.quiz = quiz;
+            next();
+         }
+         else
+         {
+            next( new Error('No existe quizId: ' + quizId) );
+         }
+      }
+   ).catch( function(error) {next(error);});
+};
 
+// GET /quizes
+
+exports.index = function(req, res) {
+   models.Quiz.findAll().then ( 
+      function(quizes) {
+         res.render('quizes/index', { quizes: quizes });
+      }
+   ).catch( function(error) { next(error);})
+};
+
+
+// GET /quizes/:Id
+
+/*
 exports.question = function(req, res) {
    models.Quiz.findAll().success( function(quiz) {
       res.render('quizes/question', {pregunta: quiz[0].pregunta})
    })
 };
+*/
+
+exports.show = function(req, res) {
+      res.render('quizes/show', {quiz: req.quiz});
+};
 
 
 // GET /quizes/answer
 
+/*
 exports.answer = function(req, res) {
    models.Quiz.findAll().success( function(quiz) {
 
@@ -23,11 +58,23 @@ exports.answer = function(req, res) {
          res.render('quizes/answer', {respuesta: 'Incorrecto!!'});
    })
 };
+*/
+
+exports.answer = function(req, res) {
+   var resultado = '¡Incorrecto!';
+
+   if (req.query.respuesta === req.quiz.respuesta)
+   {
+      resultado = '¡Correcto!';
+   }
+
+   res.render('quizes/answer', {quiz: req.quiz, respuesta: resultado});
+};
 
 // GET /author
 
 exports.author = function(req, res) {
-      res.render('author', {title:'Quiz', author: 'Damian Fernandez Condori'});
+      res.render('author', {title:'Quiz', author: 'Damián'});
 
 // GET /models
 

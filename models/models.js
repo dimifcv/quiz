@@ -8,13 +8,13 @@ var path = require('path');
 // SQLite   DATABASE_URL = sqlite://@:/
 
 var url     = process.env.DATABASE_URL.match(/(.*)\:\/\/(.*?)\:(.*)@(.*)\:(.*)\/(.*)/);
-var DB_name = (url[6] || null);
-var user    = (url[2] || null);
-var pwd     = (url[3] || null);
 var protocol= (url[1] || null);
 var dialect = (url[1] || null);
+var user    = (url[2] || null);
+var pwd     = (url[3] || null);
 var port    = (url[5] || null);
 var host    = (url[4] || null);
+var DB_name = (url[6] || null);
 var storage = process.env.DATABASE_STORAGE;
 
 // Cargamos el modelo ORM
@@ -28,8 +28,8 @@ var sequelize = new Sequelize( DB_name, user, pwd,
                           protocol:  protocol,
                           port:      port,
                           host:      host,
-                          storage:   storage, // sólo SQLite (.env)
-                          omitNull:  true     // sólo postgres
+                          storage:   storage,   // sólo SQLite (.env)
+                          omitNull:  true       // sólo postgres
                          }
                     );
 
@@ -43,6 +43,7 @@ exports.Quiz = Quiz;
 
 // Creamos y añadimos un registro a la tabla Quiz con: sequelize.syn()
 
+/*
 sequelize.sync().success( function() {
    // success() ejecuta el manejador una vez creada la tabla
 
@@ -57,8 +58,23 @@ sequelize.sync().success( function() {
    });
 
 });
+*/
 
+sequelize.sync().then( function() {
+   // Then(...) ejecuta el manejador una vez creada la tabla
+   Quiz.count().then( function(count) {
+      if (count === 0)
+      {
+         Quiz.create( { pregunta: 'Capital de Italia',
+                        respuesta: 'Roma' } );
+         Quiz.create( { pregunta: 'Capital de Portugal',
+                        respuesta: 'Lisboa' } )
+         .then(function() {console.log('Base de datos inicializada.')});
+      };
+   });
+});
 
+// Fin de: models.js
 
 
 
