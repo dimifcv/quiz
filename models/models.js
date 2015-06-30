@@ -1,13 +1,13 @@
-// programa....: models.js
-// Descripción.: Descripción del modelo del Quiz
-//
+/* *************************************************************************** *
+ * Programa....: /quiz/models/models.js                           
+ * Descripción.: Detalla la conexión a la Base de Datos: SQLite y Postgres.
+ *               Escribe primeros registros de la BD Quiz. La crea e inicializa.
+ * *************************************************************************** *
+*/
 
 var path = require('path');
+var url  = process.env.DATABASE_URL.match(/(.*)\:\/\/(.*?)\:(.*)@(.*)\:(.*)\/(.*)/);
 
-// Postgres DATABASE_URL = postgres://user:passwd@host:port/database
-// SQLite   DATABASE_URL = sqlite://@:/
-
-var url     = process.env.DATABASE_URL.match(/(.*)\:\/\/(.*?)\:(.*)@(.*)\:(.*)\/(.*)/);
 var protocol= (url[1] || null);
 var dialect = (url[1] || null);
 var user    = (url[2] || null);
@@ -33,6 +33,15 @@ var sequelize = new Sequelize( DB_name, user, pwd,
                          }
                     );
 
+/*
+// Version 1:
+// Usar BD SQLite
+var sequelize = new Sequelize( null, null, null, 
+                        {dialect: "sqlite",
+                         storage: "quiz.sqlite"}
+);
+*/
+
 // Importar la definición de la tabla Quiz en quiz.js
 
 var Quiz = sequelize.import(path.join(__dirname, 'quiz') );
@@ -41,24 +50,7 @@ var Quiz = sequelize.import(path.join(__dirname, 'quiz') );
 
 exports.Quiz = Quiz;
 
-// Creamos y añadimos un registro a la tabla Quiz con: sequelize.syn()
-
-/*
-sequelize.sync().success( function() {
-   // success() ejecuta el manejador una vez creada la tabla
-
-   Quiz.count().success( function(count) {
-      if ( count === 0 ) {   // La tabla seinicializsa sólo si esta en cero.
-         Quiz.create( { pregunta: 'Capital de Italia',
-                        respuesta: 'Roma'
-                      })
-         .success( function() { console.log('Base de Datos inicializada.')});
-      };
-   
-   });
-
-});
-*/
+// sequelize.sync() inicializa tabla de preguntas en DB
 
 sequelize.sync().then( function() {
    // Then(...) ejecuta el manejador una vez creada la tabla
@@ -68,15 +60,32 @@ sequelize.sync().then( function() {
          Quiz.create( { pregunta: 'Capital de Italia',
                         respuesta: 'Roma' } );
          Quiz.create( { pregunta: 'Capital de Portugal',
-                        respuesta: 'Lisboa' } )
+                        respuesta: 'Lisboa' } );
+         Quiz.create( { pregunta: 'Capital de Francia',
+                        respuesta: 'Paris' } );
+         Quiz.create( { pregunta: 'Capital de Alemania',
+                        respuesta: 'Berlin' } )
          .then(function() {console.log('Base de datos inicializada.')});
       };
    });
 });
 
-// Fin de: models.js
+/*
+// Versión 1:
+// sequelize.sync() crea e inicializa tabla de preguntas en DB.
+sequelize.sync().success( function() {
+   // success(..) ejecuta el manejador una vez creada la tabla
 
+   Quiz.count().success( function(count) {
+      if ( count === 0 ) {   // La tabla seinicializsa sólo si esta en cero.
+         Quiz.create( { pregunta: 'Capital de Italia',
+                        respuesta: 'Roma'
+                      })
+         .success( function() { console.log('Base de Datos inicializada.')});
+      };
+   });
+});
+*/
 
-
-
+/*  Fin de: /quiz/models/models.js  */
 

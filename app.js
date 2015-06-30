@@ -1,3 +1,10 @@
+/* *************************************************************************** *
+ * Programa....: /quiz/app.js                           
+ * Descripción.: Importa paquetes y middelwares.
+ *               Lleva el tratamiento de errores.
+ * *************************************************************************** *
+*/
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -5,14 +12,15 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var partials = require('express-partials');
-var router = require('./router/index');
+var router = require('./router/index');      // Importa el enrutador
 
 
-var app = express();
+var app = express();       // Crea la aplicación express. 
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+// Instala generador de vistas EJS
+app.set('views', path.join(__dirname, 'views'));      // path absoluto a views
+app.set('view engine', 'ejs');                        // vistas con ejs
 
 app.use(partials());
 
@@ -60,3 +68,6 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
+
+/*  Fin de: /quiz/app.js  */
+

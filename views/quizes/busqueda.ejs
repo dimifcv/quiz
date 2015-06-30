@@ -1,0 +1,24 @@
+<!--
+ * *************************************************************************** *
+ * Programa....: /quiz/views/quizes/busqueda.ejs
+ * Descripción.: Formulario de busqueda de un patron en la BD.
+ * *************************************************************************** *
+-->
+<html>
+<head>
+   <meta charset="UTF-8">
+   <title>Quiz</title>
+   <link rel="stylesheet" href="/stylesheets/style.css" />
+</head>
+
+<body>
+   <form method="GET" action="/quizes">
+      Búsqueda de: <%= filtro %><p></p>
+      <input type="text" name="filtro" value="escriba aquí" />
+      <input type="submit" value="Buscar" />
+   </form>
+</body>
+</html>
+
+<!--  Fin de: /quiz/views/quizes/busqueda.ejs  -->
+
