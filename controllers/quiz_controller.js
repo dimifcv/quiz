@@ -242,6 +242,20 @@ exports.update = function(req, res) {
 };
 
 
+// DELETE /quizes/:Id
+// Versión: 1
+exports.destroy = function(req, res) {
+      req.quiz.destroy()
+      .then ( function() {
+            res.redirect('/quizes');
+         }
+      )
+      .catch (function (error) {
+            next(error);
+      } );
+};
+
+
 // exportar models
 
 exports.models;

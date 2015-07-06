@@ -32,6 +32,9 @@ router.get('/quizes/:quizId(\\d+)/answer',quizController.answer);
 router.get('/quizes/:quizId(\\d+)/edit',  quizController.edit);
 router.put('/quizes/:quizId(\\d+)',       quizController.update);
 
+// Definición ruta de borrado de registro.
+router.delete('/quizes/:quizId(\\d+)',    quizController.destroy);
+
 // Definición ruta de Author
 router.get('/author',                     quizController.author);
 
