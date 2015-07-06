@@ -42,18 +42,19 @@ exports.index = function(req, res) {
       ).catch( function(error) { next(error);})
 
    }
-   else {
+   else 
+   {
       var quiz = models.Quiz.build( req.body.quiz );
       var filtro = quiz.pregunta;
 
-      models.Quiz.findAll({order: 'pregunta ASC'}).then ( 
-      function(quizes) {
-         res.render('quizes/index', { quizes: quizes, errors: [] });
-      }
+      models.Quiz.findAll({order: 'pregunta ASC'})
+      .then ( 
+         function(quizes) {
+            res.render('quizes/index', { quizes: quizes, errors: [] });
+         }
       ).catch( function(error) { next(error);})
-
    }
-
+};
 
 /*
    models.Quiz.findAll( {where: ["pregunta like ?", '%'+filtro+'%'], order: 'pregunta ASC'}
@@ -73,7 +74,6 @@ exports.index = function(req, res) {
       }
    ).catch( function(error) { next(error);})
 */
-};
 
 /*
 // Versión 4:
@@ -205,6 +205,41 @@ exports.create = function(req, res) {
       })
 };
 */
+
+// GET /quizes/:Id/edit
+// Versión: 1
+exports.edit = function(req, res) {
+      var quiz = req.quiz;       // autoload de la instancia de quiz
+
+      res.render('quizes/edit', {quiz: quiz, errors: [] });
+};
+
+// PUT /quizes/:Id/
+// Versión: 1
+exports.update = function(req, res) {
+      req.quiz.pregunta  = req.body.quiz.pregunta;
+      req.quiz.respuesta = req.body.quiz.respuesta;
+
+      req.quiz
+      .validate()
+      .then(
+         function(err) {
+            if (err) 
+            {
+               res.render('quizes/edit', {quiz: req.quiz, errors: err.errors});
+            }
+            else
+            {
+               req.quiz       // Guarda campos: pregunta y respuesta
+               .save( {fields: ["pregunta", "respuesta"] })
+               .then ( function() {
+                     res.redirect('/quizes');
+                  }
+               );
+            }
+         }
+      );
+};
 
 
 // exportar models

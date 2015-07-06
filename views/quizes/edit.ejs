@@ -1,0 +1,14 @@
+<!--
+ * *************************************************************************** *
+ * Programa....: /quiz/views/quizes/edit.ejs
+ * Descripción.: Modifica los campos de pregunta y respuesta.
+ * *************************************************************************** *
+-->
+
+Edite la Pregunta: <br />
+<form method="post" action="/quizes/<%= quiz.id %>?_method=put" >
+   <% include _form.ejs %>
+</form>
+
+<!--  Fin de: /quiz/views/quizes/edit.ejs  -->
+

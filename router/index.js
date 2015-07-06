@@ -28,6 +28,10 @@ router.get('/quizes',                     quizController.index);
 router.get('/quizes/:quizId(\\d+)',       quizController.show);
 router.get('/quizes/:quizId(\\d+)/answer',quizController.answer);
 
+// Definición de ruta para la edición de registros de la BD
+router.get('/quizes/:quizId(\\d+)/edit',  quizController.edit);
+router.put('/quizes/:quizId(\\d+)',       quizController.update);
+
 // Definición ruta de Author
 router.get('/author',                     quizController.author);
 
@@ -39,6 +43,8 @@ router.get('/quizes/new',                 quizController.new);
 
 // Definición de ruta para crear o salvar registros en la BD
 router.post('/quizes/create',             quizController.create);
+
+// Definición de ruta para la edición de registros de la BD
 
 
 // Exportar las rutas
