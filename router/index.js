@@ -4,10 +4,6 @@
  * *************************************************************************** *
 */
 
-// Programa....: index.js
-// Descripción.: Enruta la aplicación a los directorios correspondientes
-// Directorio..: /srv/app2/quiz/router/
-
 var express = require('express');
 var router = express.Router();      // Generamos el enrutador basico
 
@@ -15,7 +11,7 @@ var quizController = require('../controllers/quiz_controller');
 
 /* Página de entrada: GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Quiz' });
+  res.render('index', { title: 'Quiz', errors: [] });
 });
 
 // Autoload de comandos con: quizId
@@ -37,6 +33,13 @@ router.get('/author',                     quizController.author);
 
 // Definición de ruta para la búsqueda
 router.get('/quizes/busqueda',            quizController.busqueda);
+
+// Definición de ruta para Entrada de datos
+router.get('/quizes/new',                 quizController.new);
+
+// Definición de ruta para crear o salvar registros en la BD
+router.post('/quizes/create',             quizController.create);
+
 
 // Exportar las rutas
 module.exports = router;

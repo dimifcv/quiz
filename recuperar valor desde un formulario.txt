@@ -1,0 +1,21 @@
+1.-       var filtro = req.body.quiz["pregunta"];   x
+2.-       var filtro = req.body.quiz[pregunta];   X
+3.-       var filtro = req.body.quiz.pregunta;  X
+4.-       var filtro = req.body["quiz[pregunta]"];    undefined
+5.-       var filtro = req.body["quiz.pregunta"];     Undefined
+6.-       var filtro = req.body.quiz;                 Undefined
+7.-       var filtro = quiz;                          '%[object Object]%'
+8.-       var filtro = quiz[pregunta];            Reference error pregunta no esta definido
+9.-       var filtro = quiz["pregunta"];              '%undefined%'
+9         var filtro = quiz.pregunta            '%undefined%'
+10.-      var filtro = quiz.fields["pregunta"];      TypeError: Cannot read property 'pregunta' of undefined
+
+
+11.-       var filtro = quiz.get("pregunta": pregunta]);     '%undefined%'
+12.-       var filtro = quiz.get([pregunta]);         malo
+13.-       var filtro = quiz.get("pregunta");              '%undefined%'
+14.-  
+
+
+
+

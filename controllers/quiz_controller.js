@@ -30,14 +30,49 @@ exports.load = function(req, res, next, quizId) {
 // GET /quizes
 
 exports.index = function(req, res) {
-   var filtro = req.query.filtro;
-   filtro     = filtro.replace(" ", "%");
+   if (typeof(req.query.filtro) !== 'undefined') {
+      var filtro = req.query.filtro;
+
+      filtro     = filtro.replace(" ", "%");
+      models.Quiz.findAll( {where: ["pregunta like ?", '%'+filtro+'%'], order: 'pregunta ASC'}
+      ).then ( 
+      function(quizes) {
+         res.render('quizes/index', { quizes: quizes, errors: [] });
+      }
+      ).catch( function(error) { next(error);})
+
+   }
+   else {
+      var quiz = models.Quiz.build( req.body.quiz );
+      var filtro = quiz.pregunta;
+
+      models.Quiz.findAll({order: 'pregunta ASC'}).then ( 
+      function(quizes) {
+         res.render('quizes/index', { quizes: quizes, errors: [] });
+      }
+      ).catch( function(error) { next(error);})
+
+   }
+
+
+/*
    models.Quiz.findAll( {where: ["pregunta like ?", '%'+filtro+'%'], order: 'pregunta ASC'}
       ).then ( 
       function(quizes) {
          res.render('quizes/index', { quizes: quizes });
       }
    ).catch( function(error) { next(error);})
+   };
+
+*/
+/*
+   models.Quiz.findAll( {where: ["pregunta like ?", '%'+filtro+'%'], order: 'pregunta ASC'}
+      ).then ( 
+      function(quizes) {
+         res.render('quizes/index', { quizes: quizes });
+      }
+   ).catch( function(error) { next(error);})
+*/
 };
 
 /*
@@ -54,7 +89,7 @@ exports.index = function(req, res) {
 // GET /quizes/:Id
 // Versión: 3
 exports.show = function(req, res) {
-      res.render('quizes/show', {quiz: req.quiz});
+      res.render('quizes/show', {quiz: req.quiz, errors: [] });
 };
 
 /* 
@@ -85,7 +120,7 @@ exports.answer = function(req, res) {
       resultado = '¡Correcto!';
    }
 
-   res.render('quizes/answer', {quiz: req.quiz, respuesta: resultado});
+   res.render('quizes/answer', {quiz: req.quiz, respuesta: resultado, errors: []});
 };
 
 /* GET /quizes/answer
@@ -115,13 +150,62 @@ exports.answer = function(req, res) {
 // GET /author
 
 exports.author = function(req, res) {
-      res.render('author', {title:'Quiz', author: 'Damián'});
-}
+      res.render('author', {title:'Quiz', author: 'Damián', errors: []});
+};
 
 // GRT /quizes/busqueda
 exports.busqueda = function(req, res) {
-      res.render('quizes/busqueda', {filtro: 'Preguntas'});
-}
+      res.render('quizes/busqueda', {filtro: 'Preguntas', errors: [] });
+};
+
+// GET /quizes/new
+// Versión 1:
+
+exports.new = function(req, res) {
+   var quiz = models.Quiz.build(
+      { pregunta: "pregunta", respuesta: "respuesta" });
+
+   res.render('quizes/new', {quiz: quiz, errors: [] });
+};
+
+// POST /quizes/create
+// Versión 2:
+
+exports.create = function(req, res) {
+   var quiz = models.Quiz.build( req.body.quiz );
+
+   quiz.validate().then (
+      function(err) {
+         if (err)
+         {
+            res.render('quizes/new', {quiz: quiz, errors: err.errors} );
+         }
+         else
+         {
+            quiz
+            .save( {fields: ["pregunta", "respuesta"]})
+            .then ( function() {
+                  res.redirect('/quizes')
+               }
+            );
+         }
+      }
+   );
+};
+
+// Versión 1:
+/*
+exports.create = function(req, res) {
+   var quiz = models.Quiz.build( req.body.quiz );
+
+   // Guarda los campos: pregunta y respuesta de Quiz en la BD
+   quiz.save( {fields: ["pregunta", "respuesta"] }).then ( 
+      function() {
+         res.redirect('/quizes');   // url relativo, manda a lista de preguntas
+      })
+};
+*/
+
 
 // exportar models
 
