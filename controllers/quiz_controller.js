@@ -45,7 +45,6 @@ exports.index = function(req, res) {
    else 
    {
       var quiz = models.Quiz.build( req.body.quiz );
-      var filtro = quiz.pregunta;
 
       models.Quiz.findAll({order: 'pregunta ASC'})
       .then ( 
@@ -163,7 +162,7 @@ exports.busqueda = function(req, res) {
 
 exports.new = function(req, res) {
    var quiz = models.Quiz.build(
-      { pregunta: "pregunta", respuesta: "respuesta" });
+      { pregunta: "pregunta", respuesta: "respuesta", tematica: "temática" });
 
    res.render('quizes/new', {quiz: quiz, errors: [] });
 };
@@ -183,7 +182,7 @@ exports.create = function(req, res) {
          else
          {
             quiz
-            .save( {fields: ["pregunta", "respuesta"]})
+            .save( {fields: ["pregunta", "respuesta", "tematica"]})
             .then ( function() {
                   res.redirect('/quizes')
                }
@@ -219,6 +218,7 @@ exports.edit = function(req, res) {
 exports.update = function(req, res) {
       req.quiz.pregunta  = req.body.quiz.pregunta;
       req.quiz.respuesta = req.body.quiz.respuesta;
+      req.quiz.tematica  = req.body.quiz.tematica;
 
       req.quiz
       .validate()
@@ -231,7 +231,7 @@ exports.update = function(req, res) {
             else
             {
                req.quiz       // Guarda campos: pregunta y respuesta
-               .save( {fields: ["pregunta", "respuesta"] })
+               .save( {fields: ["pregunta", "respuesta", "tematica"] })
                .then ( function() {
                      res.redirect('/quizes');
                   }

@@ -9,10 +9,21 @@
 <input type="text" id="preg" name="quiz[pregunta]" 
                              value="<%= quiz.pregunta %>" /> <p />
 
+
+<p>Temática:
+<select name="quiz[tematica]">
+  <option value="humanidades" <% if (quiz.tematica === "humanidades") { %> Selected <% } %>>Humanidades</option>
+  <option value="tecnologia" <% if (quiz.tematica === "tecnologia") { %> Selected <% } %>>Tecnologia</option>
+  <option value="ciencia" <% if (quiz.tematica === "ciencia") { %> Selected <% } %>>Ciencia</option>
+  <option value="ocio" <% if (quiz.tematica === "ocio") { %> Selected <% } %>>Ocio</option>
+  <option value="otro" <% if (quiz.tematica === "otro") { %> Selected <% } %>>Otro</option>
+</select>
+</p>
+<br />
 <label for="resp" class="rem">Respuesta:</label>
 <input type="text" id="resp" name="quiz[respuesta]" 
                              value="<%= quiz.respuesta %>" /> <p />
-<br />
+
 <a href="/quizes"><button type="button">Cancelar</button></a>
 
 <input type="submit" value="Salvar" />
