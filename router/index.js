@@ -7,7 +7,9 @@
 var express = require('express');
 var router = express.Router();      // Generamos el enrutador basico
 
-var quizController = require('../controllers/quiz_controller');
+var quizController    = require('../controllers/quiz_controller');
+var commentController = require('../controllers/comment_controller');
+var sessionController = require('../controllers/session_controller');
 
 /* Página de entrada: GET home page. */
 router.get('/', function(req, res) {
@@ -22,6 +24,13 @@ router.param('quizId', quizController.load);    // Autoload :quizId
    router.get('/quizes/question',quizController.question);
    router.get('/quizes/answer',quizController.answer);
 */
+
+// Definición de rutas de sesión
+router.get('/login', sessionController.new);          // Formulario login
+router.post('/login', sessionController.create);      // Crear sesión
+router.get('/logout', sessionController.destroy);     // Destruir sesión
+
+
 
 // Definición  de rutas de quizes
 router.get('/quizes',                     quizController.index);
@@ -47,7 +56,11 @@ router.get('/quizes/new',                 quizController.new);
 // Definición de ruta para crear o salvar registros en la BD
 router.post('/quizes/create',             quizController.create);
 
-// Definición de ruta para la edición de registros de la BD
+// Definición de ruta para la tabla Comments
+router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);
+router.post('/quizes/:quizId(\\d+)/comments',    commentController.create);
+
+
 
 
 // Exportar las rutas

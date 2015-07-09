@@ -1,0 +1,17 @@
+<!--
+ * *************************************************************************** *
+ * Programa....: /quiz/views/comments/new.ejs
+ * Descripción.: Formulario que muestra el alta de un nuevo registro.
+ * *************************************************************************** *
+-->
+
+Añadir comentario: 
+<br />
+<form method="post" action="/quizes/<%= quizid %>/comments/" >
+   <input type="text" id="comment" name="comment[texto]" value="" />
+      
+   <p><button type="submit">Enviar</button></p>
+</form>
+
+<!--  Fin de: /quiz/views/comments/new.ejs  -->
+

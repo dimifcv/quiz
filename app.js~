@@ -13,6 +13,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var partials = require('express-partials');
 var methodOverride = require('method-override');
+var session = require('express-session');
 
 var router = require('./router/index');      // Importa el enrutador
 
@@ -34,8 +35,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 /*app.use(bodyParser.urlencoded({ extended: false }));*/
 
-app.use(cookieParser());
-app.use(methodOverride('_mrthod'));
+app.use(cookieParser('Quiz 2015'));    // Se añade la semilla: Quiz 2015
+app.use(session());                    // Instala Middleware session
+
+app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', router);
