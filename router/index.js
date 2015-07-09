@@ -17,7 +17,8 @@ router.get('/', function(req, res) {
 });
 
 // Autoload de comandos con: quizId
-router.param('quizId', quizController.load);    // Autoload :quizId
+router.param('quizId',    quizController.load);       // Autoload :quizId
+router.param('commentId', commentController.load);    //Autoload: commentId
 
 /*
    Antes:
@@ -37,13 +38,20 @@ router.get('/quizes',                     quizController.index);
 router.get('/quizes/:quizId(\\d+)',       quizController.show);
 router.get('/quizes/:quizId(\\d+)/answer',quizController.answer);
 
+// Definicion de rutas que tienen que ver con crear, modificar o borrar preguntas
+router.get('/quizes/new',                 sessionController.loginRequired, quizController.new);
+router.post('/quizes/create',             sessionController.loginRequired, quizController.create);
+router.get('/quizes/:quizId(\\d+)/edit',  sessionController.loginRequired, quizController.edit);
+router.put('/quizes/:quizId(\\d+)',       sessionController.loginRequired, quizController.update);
+router.delete('/quizes/:quizId(\\d+)',    sessionController.loginRequired, quizController.destroy);
+
 // Definición de ruta para la edición de registros de la BD
-router.get('/quizes/:quizId(\\d+)/edit',  quizController.edit);
+/*router.get('/quizes/:quizId(\\d+)/edit',  quizController.edit);
 router.put('/quizes/:quizId(\\d+)',       quizController.update);
-
+*/
 // Definición ruta de borrado de registro.
-router.delete('/quizes/:quizId(\\d+)',    quizController.destroy);
-
+/*router.delete('/quizes/:quizId(\\d+)',    quizController.destroy);
+*/
 // Definición ruta de Author
 router.get('/author',                     quizController.author);
 
@@ -51,17 +59,16 @@ router.get('/author',                     quizController.author);
 router.get('/quizes/busqueda',            quizController.busqueda);
 
 // Definición de ruta para Entrada de datos
-router.get('/quizes/new',                 quizController.new);
-
+/*router.get('/quizes/new',                 quizController.new);
+*/
 // Definición de ruta para crear o salvar registros en la BD
-router.post('/quizes/create',             quizController.create);
-
+/*router.post('/quizes/create',             quizController.create);
+*/
 // Definición de ruta para la tabla Comments
 router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);
 router.post('/quizes/:quizId(\\d+)/comments',    commentController.create);
-
-
-
+router.get('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish', 
+                                         sessionController.loginRequired, commentController.publish);
 
 // Exportar las rutas
 module.exports = router;
