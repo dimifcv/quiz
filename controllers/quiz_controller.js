@@ -159,7 +159,7 @@ exports.author = function(req, res) {
 
 // GRT /quizes/busqueda
 exports.busqueda = function(req, res) {
-      res.render('quizes/busqueda', {filtro: 'Preguntas', errors: [] });
+      res.render('quizes/busqueda', {filtro: 'pregunta', errors: [] });
 };
 
 // GET /quizes/new
@@ -167,7 +167,7 @@ exports.busqueda = function(req, res) {
 
 exports.new = function(req, res) {
    var quiz = models.Quiz.build(
-      { pregunta: "pregunta", respuesta: "respuesta", tematica: "temática" });
+      { pregunta: "pregunta", respuesta: "respuesta", tematica: "tematica" });
 
    res.render('quizes/new', {quiz: quiz, errors: [] });
 };
@@ -245,6 +245,9 @@ exports.update = function(req, res) {
          }
       );
 };
+
+// GET /quizes/estadistica
+
 
 
 // DELETE /quizes/:Id

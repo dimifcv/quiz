@@ -3,11 +3,11 @@
  * Descripción.: Describe los atributos para la pantalla max: 480px
  * *************************************************************************** *
 */
-body                 { background: #333;}
+body                 { background: #333; }
 #page-wrap:after     { content: "smartphone Layout"; }
-h2 span, section h3  { display: none;}
-body                 { font-size: xx-large;}
-footer, input        { font-size: large;}
+h2 span, section h3  { display: none; }
+body                 { font-size: xx-large; }
+footer, input        { font-size: large; }
 
 /*  Fin de: /quiz/public/stylesheets/smartphone.css  */
 

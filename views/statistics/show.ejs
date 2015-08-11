@@ -1,0 +1,44 @@
+<!--
+ * *************************************************************************** *
+ * Programa....: /quiz/views/statistics/show.ejs
+ * Descripción.: Formulario que muestra las estadísticas de Preguntas y Comment.
+ * *************************************************************************** *
+-->
+
+<h2>Estadística del proyecto Quiz</h2>
+<br />
+
+<table>
+   <tr>
+      <td>Número total de Preguntas</td>
+      <td>&nbsp<%= estadisticas.preguntas_tot %></td>
+   </tr>
+   <tr>
+      <td>Número total de Comentarios</td>
+      <td>&nbsp<%= estadisticas.comentarios_tot %></td>
+   </tr>
+   <tr>
+      <td>Número medio de comentarios por pregunta</td>
+      <td>&nbsp<%= estadisticas.comentarios_medio %></td>
+   </tr>
+   <tr>
+      <td>Preguntas con comentarios</td>
+      <td>&nbsp<%= estadisticas.preguntas_con %></td>
+   </tr>
+   <tr>
+      <td>Preguntas sin comentarios</td>
+      <td>&nbsp<%= estadisticas.preguntas_sin %></td>
+   </tr>
+   <tr>
+      <td>Número de Comentarios publicados</td>
+      <td>&nbsp<%= estadisticas.comentarios_pub %></td>
+   </tr>
+   <tr>
+      <td>Número de Comentarios sin publicar</td>
+      <td>&nbsp<%= estadisticas.comentarios_sin %></td>
+   </tr>
+</table>
+<br />
+
+<!--  Fin de: /quiz/views/statistics/show.ejs  -->
+
