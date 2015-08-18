@@ -36,18 +36,33 @@ app.use(bodyParser.urlencoded());
 /*app.use(bodyParser.urlencoded({ extended: false }));*/
 
 app.use(cookieParser('Quiz 2015'));    // Se añade la semilla: Quiz 2015
-app.use(session());                    // Instala Middleware session
+app.use(session({secret:'dquiz-2015'}));                    // Instala Middleware session
 
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// Helpers dinámicos
+app.use( function(req, res, next) {
+   // Guardar el path en session.redir para después del login
+   if (!req.path.match(/\/login|\/logout/) )
+   {
+      req.session.redir = req.path;
+   }
+   
+   // Hacer visible req.session en las vistas
+   res.locals.session = req.session;
+   next();
+});
+
+app.use('/', router);
 
 // MW de Autologout: Controlamos el timeout de sesión. Máximo 2 minutos de inactividad
 
 app.use( function(req, res, next) {
       if (req.session.user) {
          // Hay sesion de usuario
-         if ( ((new Date()).getTime() - req.session.iniTimeSession) > 20000 ) {
+         if ( ((new Date()).getTime() - req.session.iniTimeSession) > 120000 ) {
                   // Destruimos la sesión
             //res.send();
             delete req.session.user;
@@ -67,22 +82,6 @@ app.use( function(req, res, next) {
          next();
       }
 });
-
-
-// Helpers dinámicos
-app.use( function(req, res, next) {
-   // Guardar el path en session.redir para después del login
-   if (!req.path.match(/\/login|\/logout/) )
-   {
-      req.session.redir = req.path;
-   }
-   
-   // Hacer visible req.session en las vistas
-   res.locals.session = req.session;
-   next();
-});
-
-app.use('/', router);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
