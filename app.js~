@@ -36,7 +36,7 @@ app.use(bodyParser.urlencoded());
 /*app.use(bodyParser.urlencoded({ extended: false }));*/
 
 app.use(cookieParser('Quiz 2015'));    // Se añade la semilla: Quiz 2015
-app.use(session({secret:'dquiz-2015'}));                    // Instala Middleware session
+app.use(session({secret:'Quiz 2015'}));                 // Instala Middleware session
 
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));

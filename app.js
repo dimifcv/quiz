@@ -36,11 +36,30 @@ app.use(bodyParser.urlencoded());
 /*app.use(bodyParser.urlencoded({ extended: false }));*/
 
 app.use(cookieParser('Quiz 2015'));    // Se añade la semilla: Quiz 2015
-app.use(session({secret:'Quiz 2015'}));                 // Instala Middleware session
+app.use(session());                 // Instala Middleware session
 
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// MW de Autologout: Controlamos el timeout de sesión. Máximo 2 minutos de inactividad
+
+app.use( function(req, res, next) {
+      if (req.session.user) {
+         // Hay sesion de usuario
+         if ( (new Date().getTime() - req.session.iniTimeSession) > 120000 ) {
+                  // Destruimos la sesión
+            delete req.session.user;
+            res.redirect('/login' );
+         }
+         else {
+               // Sigue navegando. Volvemos a inicializar variable de tiempo de sesión.
+               req.session.iniTimeSession = new Date().getTime();
+         }
+      }
+      
+      next();
+});
 
 // Helpers dinámicos
 app.use( function(req, res, next) {
@@ -56,32 +75,6 @@ app.use( function(req, res, next) {
 });
 
 app.use('/', router);
-
-// MW de Autologout: Controlamos el timeout de sesión. Máximo 2 minutos de inactividad
-
-app.use( function(req, res, next) {
-      if (req.session.user) {
-         // Hay sesion de usuario
-         if ( ((new Date()).getTime() - req.session.iniTimeSession) > 120000 ) {
-                  // Destruimos la sesión
-            //res.send();
-            delete req.session.user;
-            res.redirect(req.session.redir.toString() );
-            //res.send('La sesión ha finalizado!');
-            //res.redirect('/');
-
-         }
-         else {
-               // Sigue navegando. Volvemos a inicializar variable de tiempo de sesión.
-               req.session.iniTimeSession = (new Date()).getTime();
-               next();
-         }
-      }
-      else
-      {
-         next();
-      }
-});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
